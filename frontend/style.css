@@ -1,0 +1,126 @@
+body{
+    background-color: #555;
+}/* Main chat box */
+.box {
+  width: 90%;
+  max-width: 400px;      
+  height: 80vh;         
+  max-height: 600px;    
+  border-radius: 4%;
+ 
+  
+  border: 2px solid rgb(3, 3, 3);
+  background-color: rgb(81, 79, 79);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 1rem;         
+  margin: 4rem auto;
+
+  text-align: center;
+  font-size: 1.2rem;
+
+  box-sizing: border-box;
+}
+
+/* Messages area */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+/* Individual messages */
+.message {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 15px;
+  max-width: 80%;
+  animation: fadeIn 0.3s ease;
+}
+
+.user-message {
+  background-color: #5b5a5e03;
+  align-self: flex-end;
+}
+
+.bot-message {
+  background-color: #f1f0f0;
+  align-self: flex-start;
+}
+.box {
+  position: relative; /* container for absolute positioning */
+}
+
+.chat-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-top: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 0 0 10px 10px;
+  
+  position: relative;   /* normal position initially */
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+/* On hover, footer goes outside the box */
+.chat-footer:hover {
+  position: absolute;
+  bottom: -50px;        /* move it below the box */
+  left: 0;
+  width: 100%;          /* full width of the box */
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+
+.chat-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+/* Send button */
+.send-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.send-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Typing indicator */
+.typing-indicator {
+  font-size: 0.8rem;
+  color: #555;
+  margin-right: 0.5rem;
+  display: none; /* hide by default */
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .box {
+    width: 95%;
+    height: 75vh;
+    font-size: 1rem;
+  }
+}
