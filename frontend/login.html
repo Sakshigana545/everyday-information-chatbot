@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login to Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-box">
+
+      <h1>Login to Chatbot</h1>
+
+      <form id="loginForm">
+        <label for="email">Email address</label>
+        <input id="email" type="email" required />
+
+        <div class="password-row">
+          <label for="password">Password</label>
+          <a href="#" id="forgotPassword">Forgot password?</a>
+        </div>
+
+        <input id="password" type="password" required />
+
+        <p class="error" id="errorMsg"></p>
+
+        <button type="submit" class="btn-primary">Log in</button>
+      </form>
+
+      <!-- ✅ SIGNUP REDIRECT -->
+      <p class="signup-text">
+        Don’t have an account?
+        <a href="signup.html">Sign up</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script src="signin.js"></script>
+</body>
+</html>

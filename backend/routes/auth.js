@@ -1,17 +1,25 @@
 const express = require("express");
-
-const bcrypt = require("bcryptjs");  
-
-const User = require("../models/User"); // exact capitalization
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 
 const router = express.Router();
 
-// Temporary test route
+// TEST ROUTE
 router.get("/test", (req, res) => {
   res.send("API is reachable");
 });
 
-// Signup API
+// GET ALL USERS
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// SIGNUP
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -20,25 +28,25 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "All fields required" });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const exists = await User.findOne({ email });
+    if (exists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    await User.create({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
-
-    await user.save();
 
     res.status(201).json({ message: "Signup successful" });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 module.exports = router;
+

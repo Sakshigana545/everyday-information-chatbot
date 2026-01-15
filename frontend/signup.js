@@ -6,28 +6,29 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   if (!username || !email || !password) {
-    alert("Please fill in all fields.");
+    alert("All fields are required");
     return;
   }
 
   try {
-    const response = await fetch("/api/auth/signup", {
+    const response = await fetch("http://localhost:3000/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ name: username, email, password }),
     });
 
     const data = await response.json();
 
-    if (response.ok) {
-      alert("Signup successful!");
-      document.getElementById("signup-form").reset();
-      // Optionally redirect or do other UI updates here
-    } else {
+    if (!response.ok) {
       alert(data.message || "Signup failed");
+      return;
     }
-  } catch (error) {
-    console.error("Signup error:", error);
-    alert("Something went wrong. Please try again.");
+
+    alert("Signup successful!");
+    document.getElementById("signup-form").reset();
+    // window.location.href = "login.html";
+  } catch (err) {
+    console.error(err);
+    alert("Server error. Please try again later.");
   }
 });

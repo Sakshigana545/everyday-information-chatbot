@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Signup - Sora Chatbot</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="signup.css" />
+</head>
+<body>
+
+  <div class="signup-container">
+    <h2>Log in or sign up</h2>
+    
+
+    <!-- Signup form -->
+    <form id="signup-form">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="email" id="email" placeholder="Email address" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" class="create-account-btn">Create Account</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <!-- Social buttons -->
+    <button class="social google" id="btn-google">
+      <i class="fa-brands fa-google"></i> Continue with Google
+    </button>
+
+    <button class="social apple" id="btn-apple">
+      <i class="fa-brands fa-apple"></i> Continue with Apple
+    </button>
+
+    <button class="social microsoft" id="btn-microsoft">
+      <i class="fa-brands fa-microsoft"></i> Continue with Microsoft
+    </button>
+
+    <button class="social phone" id="btn-phone">
+      <i class="fa-solid fa-phone"></i> Continue with phone
+    </button>
+  </div>
+
+  <script src="signup.js"></script>
+</body>
+</html>
+
+

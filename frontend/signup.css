@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #0f0f0f;
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-container {
+  background: #1e1e1e;
+  padding: 30px;
+  border-radius: 14px;
+  width: 380px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 18px;
+}
+
+/* Form inputs */
+form input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 25px;
+  border: 1px solid #444;
+  background: #111;
+  color: white;
+  font-size: 14px;
+}
+
+/* Create Account button */
+.create-account-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 25px;
+  border: none;
+  background: white;
+  color: black;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Divider */
+.divider {
+  margin: 20px 0 15px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* Social buttons */
+.social {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 25px;
+  border: 1px solid #444;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social i {
+  margin-right: 8px;
+}
