@@ -15,13 +15,38 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<!-- sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top" id="menuToggle">☰</div>
+  <ul id="historyList" class="history-list"></ul>
+  <div class="sidebar-bottom">⚙️</div>
+</aside>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-top">☰</div>
-    <div class="sidebar-bottom">⚙️</div>
-  </aside>
+<!-- ================= SYSTEM PANEL ================= -->
+<div class="system-panel" id="systemPanel">
+  <div class="system-section">
+    <h4>Account</h4>
+    <p id="viewProfile">View Profile</p>
+    <p id="logoutOption">Logout</p>
+  </div>
 
+  <div class="system-section">
+    <h4>Chat</h4>
+    <p id="clearChat">Clear Chat</p>
+    <p id="resetChat">Reset Chat</p>
+  </div>
+
+  <div class="system-section">
+    <h4>Appearance</h4>
+    <p id="toggleDark">Dark Mode</p>
+  </div>
+
+  <div class="system-section">
+    <h4>System</h4>
+    <p>About</p>
+    <p>Help</p>
+  </div>
+</div>
   <!-- App -->
   <div class="app">
 
@@ -32,6 +57,9 @@
       </div>
 
       <div class="right-side">
+        <!-- ✅ Added username span -->
+        <span id="username"></span>
+
         <i class="fa-regular fa-user user-icon"></i>
 
         <a href="login.html">
@@ -46,10 +74,9 @@
 
     <!-- Main -->
     <main class="main-container">
-    <h1 class="title" id="chat-title">What can I help with?</h1>
+      <h1 class="title" id="chat-title">What can I help with?</h1>
 
-
-      <!-- Messages Area -->
+      <!-- ✅ Messages Area -->
       <div class="messages" id="messages"></div>
 
       <!-- Input Box -->
@@ -58,16 +85,13 @@
           type="text"
           id="user-input"
           class="chat-input"
-          placeholder="Message Sora..."
-        />
+          placeholder="Message Sora..." />
         <button id="send-btn" class="send-btn">➤</button>
       </div>
     </main>
 
   </div>
 
-  <!-- JavaScript -->
-  <script src="script.js"></script>
-
+  <script src="script.js" defer></script>
 </body>
 </html>

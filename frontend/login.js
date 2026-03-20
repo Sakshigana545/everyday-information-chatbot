@@ -1,16 +1,11 @@
-const form = document.getElementById("loginForm");
-const errorMsg = document.getElementById("errorMsg");
-
-form.addEventListener("submit", async (e) => {
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  errorMsg.style.display = "none";
+  const password = document.getElementById("password").value;
 
   if (!email || !password) {
-    showError("Please fill in all fields.");
+    alert("All fields are required");
     return;
   }
 
@@ -18,34 +13,26 @@ form.addEventListener("submit", async (e) => {
     const response = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      showError(data.message || "Login failed");
+      alert(data.message);
       return;
     }
 
-    // ✅ Save JWT & user
-    localStorage.setItem("token", data.token);
+    // ✅ SAVE LOGIN STATE
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    alert("Login successful 🤖");
+    alert("Login successful!");
+
+    // ✅ REDIRECT TO HOME
     window.location.href = "index.html";
 
   } catch (err) {
-    showError("Server error. Please try again.");
+    console.error(err);
+    alert("Server error");
   }
 });
-
-function showError(message) {
-  errorMsg.textContent = message;
-  errorMsg.style.display = "block";
-}
-
-// Optional
-document.getElementById("forgotPassword").onclick = () => {
-  alert("Password recovery feature coming soon.");
-};

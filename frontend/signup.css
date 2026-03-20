@@ -15,7 +15,7 @@ body {
 }
 
 .signup-container {
-  background: #1e1e1e;
+  background: #343232;
   padding: 30px;
   border-radius: 14px;
   width: 380px;
@@ -28,7 +28,7 @@ h2 {
 
 .subtitle {
   font-size: 13px;
-  color: #aaa;
+  color: #fef9f9;
   margin-bottom: 18px;
 }
 
@@ -51,7 +51,7 @@ form input {
   border-radius: 25px;
   border: none;
   background: white;
-  color: black;
+  color: rgb(22, 20, 20);
   font-size: 15px;
   cursor: pointer;
 }

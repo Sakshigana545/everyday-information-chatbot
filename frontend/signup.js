@@ -20,13 +20,18 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-      alert(data.message || "Signup failed");
+      alert(data.message);
       return;
     }
 
+    // ✅ SAVE LOGIN STATE (THIS WAS MISSING EARLIER)
+    localStorage.setItem("user", JSON.stringify(data.user));
+
     alert("Signup successful!");
-    document.getElementById("signup-form").reset();
-    // window.location.href = "login.html";
+
+    // ✅ REDIRECT TO HOME (INDEX PAGE)
+    window.location.href = "index.html";
+
   } catch (err) {
     console.error(err);
     alert("Server error. Please try again later.");

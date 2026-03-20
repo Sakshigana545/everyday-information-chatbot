@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sora Chatbot</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+  <!-- Top menu icon -->
+  <div class="sidebar-top">☰</div>
+
+  <!-- History section -->
+  <h3 class="sidebar-title"></h3>
+  <ul id="historyList"></ul>
+
+  <!-- Bottom settings icon -->
+  <div class="sidebar-bottom">⚙️</div>
+
+</aside>
+
+  <!-- App -->
+  <div class="app">
+
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="left-side">
+        <div class="logo">Sora</div>
+      </div>
+
+      <div class="right-side">
+        <i class="fa-regular fa-user user-icon"></i>
+
+        <a href="login.html">
+          <button class="btn-primary">Login</button>
+        </a>
+
+        <a href="signup.html">
+          <button class="signup">Sign up</button>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main-container">
+    <h1 class="title" id="chat-title">What can I help with?</h1>
+
+
+      <!-- Messages Area -->
+      <div class="messages" id="messages"></div>
+
+      <!-- Input Box -->
+      <div class="chat-box">
+        <input
+          type="text"
+          id="user-input"
+          class="chat-input"
+          placeholder="Message Sora..." />
+        <button id="send-btn" class="send-btn">➤</button>
+      </div>
+    </main>
+
+  </div>
+
+
+<!-- JavaScript -->
+<script src="script.js" defer></script>
+
+</body>
+</html>
+
+const sendBtn = document.getElementById("send-btn");
+const userInput = document.getElementById("user-input");
+const messages = document.getElementById("messages");
+const chatTitle = document.getElementById("chat-title");
+const historyList = document.getElementById("historyList");
+const usernameSpan = document.getElementById("username");
+
+// 🔐 Logged-in user
+const user = JSON.parse(localStorage.getItem("user"));
+
+// ❗ If not logged in
+if (!user) {
+  usernameSpan.innerText = "Guest";
+} else {
+  usernameSpan.innerText = user.name;
+
+  // hide login/signup buttons
+  document.querySelector(".btn-primary").style.display = "none";
+  document.querySelector(".signup").style.display = "none";
+}
+
+// 🧠 USER-BASED HISTORY KEY
+const historyKey = user ? `chatHistory_${user.email}` : null;
+
+/* =====================
+   EVENTS
+===================== */
+
+sendBtn.addEventListener("click", sendMessage);
+
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+
+/* =====================
+   SEND MESSAGE
+===================== */
+
+async function sendMessage() {
+  const text = userInput.value.trim();
+  if (!text) return;
+
+  chatTitle.style.display = "none";
+  addMessage(text, "user");
+  userInput.value = "";
+
+  // ❌ Do not save history if not logged in
+  if (user) saveToHistory(text);
+
+  try {
+    const response = await fetch("http://localhost:3000/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
+
+    const data = await response.json();
+    addMessage(data.reply || "No reply 😕", "bot");
+
+  } catch (error) {
+    addMessage("Server error 😢", "bot");
+  }
+}
+
+/* =====================
+   ADD MESSAGE UI
+===================== */
+
+function addMessage(text, sender) {
+  const div = document.createElement("div");
+  div.className = `message ${sender}`;
+
+  const label = sender === "user" ? "You" : "Sora";
+  div.innerHTML = `<strong>${label}:</strong> ${text}`;
+
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+/* =====================
+   HISTORY (USER BASED)
+===================== */
+
+function saveToHistory(message) {
+  if (!historyKey) return;
+
+  let history = JSON.parse(localStorage.getItem(historyKey)) || [];
+  history.unshift(message);
+  localStorage.setItem(historyKey, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  if (!historyKey) return;
+
+  historyList.innerHTML = "";
+  const history = JSON.parse(localStorage.getItem(historyKey)) || [];
+
+  history.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+
+    li.onclick = () => {
+      userInput.value = item;
+      userInput.focus();
+    };
+
+    historyList.appendChild(li);
+  });
+}
+
+// 🔁 Load history on refresh
+window.onload = renderHistory;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+/* Body layout */
+body {
+  display: flex;
+  height: 100vh;
+  background: #f0ebeb;
+  color: rgb(19, 18, 18);
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 60px;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.sidebar-top,
+.sidebar-middle,
+.sidebar-bottom {
+  font-size: 20px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.sidebar-middle {
+  margin-top: 20px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.sidebar-top:hover,
+.sidebar-middle:hover,
+.sidebar-bottom:hover {
+  color: white;
+}
+
+/* ================= APP ================= */
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* left logo / right actions */
+  align-items: center;
+  padding: 16px 30px;
+}
+
+/* Left side (logo) */
+.left-side {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Right side (user icon + buttons) */
+.right-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-icon {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.right-side button {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.login {
+  background: transparent;
+  color: rgb(47, 45, 45);
+}
+
+.signup {
+  background:transparent;
+  color: rgb(11, 11, 11);
+}
+
+/* ================= MAIN ================= */
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+/* ================= CHAT BOX ================= */
+.chat-box {
+  width: 60%;
+  max-width: 600px;
+  background: #1a1a1a;
+  padding: 12px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+}
+
+.send-btn {
+  background: #2a2a2a;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  background: #3a3a3a;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .chat-box {
+    width: 90%;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}
+/* ================= MESSAGES ================= */
+
+.messages {
+  width: 60%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  padding: 10px 14px;
+  border-radius: 12px;
+  max-width: 80%;
+  font-size: 14px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #007bff;
+  color: white;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background: #e4e4e4;
+  color: black;
+}
