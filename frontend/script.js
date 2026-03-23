@@ -182,6 +182,35 @@ function addMessage(text, sender) {
 }
 
 // Send message function (called on button click or enter)
+// async function sendMessage() {
+//   const text = userInput.value.trim();
+//   if (!text) return;
+
+//   chatTitle.style.display = "none";
+//   addMessage(text, "user");
+//   userInput.value = "";
+
+//   if (user) saveToHistory(text, "user");
+
+//   try {
+//     const response = await fetch("http://localhost:3000/api/chat", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ message: text }),
+//     });
+
+//     const data = await response.json();
+
+//     if (data.reply) {
+//       addMessage(data.reply, "bot");
+//       if (user) saveToHistory(data.reply, "bot");
+//     } else {
+//       addMessage("No reply from bot.", "bot");
+//     }
+//   } catch (error) {
+//     addMessage("Server error 😢", "bot");
+//   }
+// }
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
@@ -190,20 +219,20 @@ async function sendMessage() {
   addMessage(text, "user");
   userInput.value = "";
 
-  if (user) saveToHistory(text, "user");
+  if (user) saveToHistory(text, "user"); // optional localStorage history if you still want it
 
   try {
     const response = await fetch("http://localhost:3000/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text }),
+      body: JSON.stringify({ message: text, userId: user.id }) // ✅ include userId
     });
 
     const data = await response.json();
 
     if (data.reply) {
       addMessage(data.reply, "bot");
-      if (user) saveToHistory(data.reply, "bot");
+      if (user) saveToHistory(data.reply, "bot"); // optional localStorage
     } else {
       addMessage("No reply from bot.", "bot");
     }
@@ -211,7 +240,6 @@ async function sendMessage() {
     addMessage("Server error 😢", "bot");
   }
 }
-
 /* ============== EVENTS =============== */
 
 sendBtn.addEventListener("click", sendMessage);
